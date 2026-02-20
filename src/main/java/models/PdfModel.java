@@ -1,56 +1,56 @@
 package models;
 
-import helperclasses.Id;
-import helperclasses.PdfOperations;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.UUID;
 
-//this should not be a record, but the inputs should be final
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class PdfModel extends PdfOperations {
+
+//PdfModel is used to write objects on demand to the baos, retrieve object properties from hash map
+
+@SuppressWarnings({"unused", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"})
+public class PdfModel {
 
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final String currentStage = "";
-    private int currentOffset = 0;
-    private int currentObjectNumber;
-    private double version;
+    private int currentObjectNumber = 0;
+    private final HashMap<UUID, Object> objects = new HashMap<>();
 
-    // Indirect Object Abstract Class map for fast retrieval all Indirect Objects
-    private final HashMap<Id, IndirectObject> indirectObjects = new HashMap<>();
 
-    //Different constructors could create different pdf versions
-    public PdfModel() {
-        try {
-            writeBytes(outputStream, "%PDF-1.7\n");
-            currentOffset += outputStream.size();
-        } catch (IOException e) {}
+    public PdfModel() throws IOException {
+        outputStream.write("%PDF-1.7\n".getBytes(StandardCharsets.US_ASCII));
     }
 
-    public void writeIndirectObject(IndirectObject indirectObject) {
-        indirectObjects.put(indirectObject.getId(), indirectObject);
+    public void writeByteArray(byte[] byteArray) throws IOException {
+        outputStream.write(byteArray);
+    }
+    public void writeString(String string) throws IOException {
+        outputStream.write(string.getBytes(StandardCharsets.US_ASCII));
+    }
+    public int getCurrentSize() {
+        return outputStream.size();
     }
 
     public int provideObjectNumber() {
         return ++currentObjectNumber;
     }
 
-    public int getCurrentOffset() {
-        return currentOffset;
-    }
-
-    public void addCurrentOffsett(int length) {
-        currentOffset += length;
-    }
-
-    public void setCurrentOffset(int length) {
-        currentOffset = length;
+    public void registerObject(Object object) {
+        objects.put(object.getId(), object);
     }
 
     public ByteArrayOutputStream getOutputStream() {
         return outputStream;
     }
+
+
+
+
+
+
+
 
 
 }
