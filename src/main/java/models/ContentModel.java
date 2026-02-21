@@ -14,6 +14,7 @@ public class ContentModel extends IndirectObject {
     //This entire class could be done inside StreamObject class...
     //Maybe it could extend StreamObject
     private final DictionaryModel dictionary;
+    private final StreamModel streamModel;
     ByteArrayOutputStream instructionStream = new ByteArrayOutputStream();
     private ArrayList<String> instructions = new ArrayList<>();
     private final ByteArrayOutputStream stream = new ByteArrayOutputStream();
