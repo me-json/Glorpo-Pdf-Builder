@@ -23,8 +23,8 @@ public class PdfModel {
         outputStream.write("%PDF-1.7\n".getBytes(StandardCharsets.US_ASCII));
     }
 
-    public void writeByteArray(byte[] byteArray) throws IOException {
-        outputStream.write(byteArray);
+    public void writeByteArray(ByteArrayOutputStream byteArray) throws IOException {
+        byteArray.writeTo(outputStream);
     }
     public void writeString(String string) throws IOException {
         outputStream.write(string.getBytes(StandardCharsets.US_ASCII));

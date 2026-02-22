@@ -1,34 +1,58 @@
 package models;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class StreamModel extends Object{
 
-    ByteArrayOutputStream instructionStream = new ByteArrayOutputStream();
-    private ArrayList<String> instructions = new ArrayList<>();
+
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
     private int streamSize;
+    //counter indicates if -1 should be added to stream size
+    private int counter = 0;
 
-
-    //flush commands write any literal instructions to the baos
-    //any direct read bytes don't need to follow this process
-    //instruction arraylist -> flush to bytes
-    //byte[] or baos input -> directly to baos
-    public void writeInstruction(){
-        for (String instruction : instructions) {
-            instructionStream.write(instruction.getBytes(StandardCharsets.US_ASCII));
-        }
-
+    public StreamModel(PdfModel pdfModel) {
+        super(pdfModel);
     }
-    //
+
 
     public int getStreamSize() {
+        streamSize = stream.size();
+        if (counter > 1) {
+            streamSize--;
+        }
         return streamSize;
     }
 
-    public byte[] getByteArray() {
-        return instructionStream.toByteArray();
+    public ByteArrayOutputStream getStream() {
+        return stream;
     }
+
+    public void drawImage(
+            UUID id,
+            double a, double b, double c,
+            double d, double e, double f) throws IOException {
+        String drawingInstruction = String.format(
+                "q\n%.0f %.0f %.0f %.0f %.0f %.0f cm\n/%s Do\nQ\n",
+                a, b, c, d, e, f, id.toString());
+        stream.write(drawingInstruction.getBytes(StandardCharsets.US_ASCII));
+        counter++;
+    }
+    // Draw images based on 4 value transformation matrix
+    public void drawImage(
+            UUID id,
+            double a, double b, double c,
+            double d) throws IOException {
+
+        String drawingInstruction = String.format(
+                "q\n%.0f %.0f %.0f %.0f cm\n/%s Do\nQ\n",
+                a, b, c, d, id.toString());
+        stream.write(drawingInstruction.getBytes(StandardCharsets.US_ASCII));
+        counter++;
+    }
+
 
 }
