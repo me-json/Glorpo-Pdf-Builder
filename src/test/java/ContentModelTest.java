@@ -22,8 +22,8 @@ public class ContentModelTest {
         uuid = UUID.randomUUID();
         try {
             model = new ContentModel(pdfModel);
-            model.getStreamModel().drawImage(uuid, 132, 0, 0, 132, 45, 140);
-            model.getStreamModel().drawImage(uuid, 132, 0, 0, 132, 45, 140);
+            model.drawImage(uuid, 132, 0, 0, 132, 45, 140);
+            model.drawImage(uuid, 132, 0, 0, 132, 45, 140);
             model.writeToPdf();
             System.out.println(model.getDictionary().returnDictionary());
         } catch (IOException e) {

@@ -29,7 +29,6 @@ public class ContentModel extends IndirectObject {
 
     @Override
     public void writeToPdf() throws IOException {
-
         String objectLine = getObjectNumber() + " " + getObjectVersion() + " obj\n";
         pdfModel.writeString(objectLine);
         dictionary.writeDictionaryEntry("Length", String.valueOf(stream.getStreamSize()));
@@ -40,6 +39,26 @@ public class ContentModel extends IndirectObject {
         calculateSize();
     }
 
+    public void drawImage(
+            UUID id,
+            double a, double b, double c,
+            double d, double e, double f) throws IOException {
+        String drawingInstruction = String.format(
+                "q\n%.0f %.0f %.0f %.0f %.0f %.0f cm\n/%s Do\nQ\n",
+                a, b, c, d, e, f, id.toString());
+        stream.writeString(drawingInstruction);
+    }
+    // Draw images based on 4 value transformation matrix
+    public void drawImage(
+            UUID id,
+            double a, double b, double c,
+            double d) throws IOException {
+
+        String drawingInstruction = String.format(
+                "q\n%.0f %.0f %.0f %.0f cm\n/%s Do\nQ\n",
+                a, b, c, d, id.toString());
+        stream.writeString(drawingInstruction);
+    }
 
 
     public DictionaryModel getDictionary() {
