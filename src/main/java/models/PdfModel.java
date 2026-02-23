@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 
@@ -16,7 +17,10 @@ public class PdfModel {
 
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private int currentObjectNumber = 0;
-    private final HashMap<UUID, Object> objects = new HashMap<>();
+    private int currentXrefNumber = 0;
+    private int currentGenerationNumber = 0;
+    private final LinkedHashMap<UUID, Object> objects = new LinkedHashMap<>();
+
 
 
     public PdfModel() throws IOException {
@@ -45,7 +49,31 @@ public class PdfModel {
         return outputStream;
     }
 
+    public void writeXrefTable() throws IOException {
+        outputStream.write("xref\n".getBytes(StandardCharsets.US_ASCII));
+        outputStream.write(String.valueOf(currentXrefNumber).getBytes(StandardCharsets.US_ASCII));
+        outputStream.write(" ".getBytes(StandardCharsets.US_ASCII));
+        outputStream.write(String.valueOf(objects.size()).getBytes(StandardCharsets.US_ASCII));
+        outputStream.write("\n".getBytes(StandardCharsets.US_ASCII));
+        outputStream.write("0000000000 65535 f\n".getBytes(StandardCharsets.US_ASCII));
+        int i = 0;
+        for (Object value : objects.values()) {
+            if (value instanceof IndirectObject) {
+                if (i >= currentXrefNumber) {
+                    outputStream.write(writeXrefLine((IndirectObject) value).getBytes(StandardCharsets.US_ASCII));
+                }
+            }
+            if (i >= objects.size()) break;
+            i++;
+        }
+    }
 
+    public String writeXrefLine(IndirectObject indirectObject) throws IOException {
+        int objectOffset = indirectObject.getStartingOffset();
+        String generationNumber = indirectObject.getGenerationNumber();
+        boolean inUse = indirectObject.isInUse();
+        return String.format("%010d %05d %s \n", objectOffset, Integer.parseInt(generationNumber), inUse ? "n" : "f");
+    }
 
 
 

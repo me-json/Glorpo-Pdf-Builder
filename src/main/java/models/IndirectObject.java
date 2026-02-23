@@ -15,7 +15,8 @@ public abstract class IndirectObject extends Object{
     private final int objectNumber;
     private final int startingOffset;
     private int size;
-    private int objectVersion = 0;
+    private int generationNumber = 0;
+    private boolean inUse = false;
 
 
 
@@ -48,15 +49,29 @@ public abstract class IndirectObject extends Object{
         return String.valueOf(objectNumber);
     }
 
-    public String getObjectVersion() {
-        return String.valueOf(objectVersion);
+    public String getGenerationNumber() {
+        return String.valueOf(generationNumber);
     }
 
-    public void incrementVersion() {
-        objectVersion++;
+    public int getStartingOffset() {
+        return startingOffset;
     }
 
-    public void setVersion(int version) {
-        objectVersion = version;
+    //Object version needs to be changed to generation number
+    public void incrementGeneration() {
+        generationNumber++;
     }
+
+    public void setGenerationNumber(int generation) {
+        generationNumber = generation;
+    }
+
+    public boolean isInUse() {
+        return inUse;
+    }
+    public int getGeneration() {
+        return generationNumber;
+    }
+
+
 }
