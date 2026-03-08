@@ -2,34 +2,39 @@ package models;
 
 
 
+import models.base.IndirectObject;
+import models.base.Object;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
 
-//PdfModel is used to write objects on demand to the baos, retrieve object properties from hash map
+//Pdf is used to write objects on demand to the baos, retrieve object properties from hash map
 
 @SuppressWarnings({"unused", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"})
-public class PdfModel {
+public class Pdf {
 
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private int currentObjectNumber = 0;
     private int currentXrefNumber = 0;
     private int currentGenerationNumber = 0;
-    private final LinkedHashMap<UUID, Object> objects = new LinkedHashMap<>();
+    private final LinkedHashMap<UUID, models.base.Object> objects = new LinkedHashMap<>();
+    private int xrefOffset;
+    private PagesIndirectObject pagesIndirectObject;
+    private CatalogIndirectObject catalogIndirectObject;
 
 
-
-    public PdfModel() throws IOException {
+    public Pdf() throws IOException {
         outputStream.write("%PDF-1.7\n".getBytes(StandardCharsets.US_ASCII));
     }
-
+    //This method can also be added to IndirectObject (must get os stream with pdfModel.getOutputStream())
     public void writeByteArray(ByteArrayOutputStream byteArray) throws IOException {
         byteArray.writeTo(outputStream);
     }
+    //This method can also be added to IndirectObject (must get os stream with pdfModel.getOutputStream())
     public void writeString(String string) throws IOException {
         outputStream.write(string.getBytes(StandardCharsets.US_ASCII));
     }
@@ -41,7 +46,7 @@ public class PdfModel {
         return ++currentObjectNumber;
     }
 
-    public void registerObject(Object object) {
+    public void registerObject(models.base.Object object) {
         objects.put(object.getId(), object);
     }
 
@@ -49,7 +54,26 @@ public class PdfModel {
         return outputStream;
     }
 
+
+    public void writePagesIndirectObject(PagesIndirectObject pagesIndirectObject) {
+        this.pagesIndirectObject = pagesIndirectObject;
+    }
+
+    public PagesIndirectObject getPagesIndirectObject() {
+        return pagesIndirectObject;
+    }
+
+    public void writeCatalogIndirectObject(CatalogIndirectObject catalogIndirectObject) {
+        this.catalogIndirectObject = catalogIndirectObject;
+    }
+
+    public CatalogIndirectObject getCatalogIndirectObject() {
+        return catalogIndirectObject;
+    }
+
+    //This can be refactored to use writeString method
     public void writeXrefTable() throws IOException {
+        xrefOffset = outputStream.size();
         outputStream.write("xref\n".getBytes(StandardCharsets.US_ASCII));
         outputStream.write(String.valueOf(currentXrefNumber).getBytes(StandardCharsets.US_ASCII));
         outputStream.write(" ".getBytes(StandardCharsets.US_ASCII));
@@ -75,6 +99,16 @@ public class PdfModel {
         return String.format("%010d %05d %s \n", objectOffset, Integer.parseInt(generationNumber), inUse ? "n" : "f");
     }
 
+    public void writeTrailer() throws IOException {
+        outputStream.write("trailer\n".getBytes(StandardCharsets.US_ASCII));
+
+
+
+
+        outputStream.write("startxref\n".getBytes(StandardCharsets.US_ASCII));
+        outputStream.write((String.valueOf(xrefOffset) + "\n").getBytes(StandardCharsets.US_ASCII));
+        outputStream.write("%%EOF".getBytes(StandardCharsets.US_ASCII));
+    }
 
 
 

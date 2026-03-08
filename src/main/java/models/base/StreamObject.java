@@ -1,12 +1,12 @@
-package models;
+package models.base;
+
+import models.Pdf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.UUID;
 
-public class StreamModel extends Object{
+public class StreamObject extends Object {
 
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -14,7 +14,7 @@ public class StreamModel extends Object{
     //counter indicates if -1 should be added to stream size
     private int counter = 0;
 
-    public StreamModel(PdfModel pdfModel) {
+    public StreamObject(Pdf pdfModel) {
         super(pdfModel);
     }
 
@@ -33,6 +33,11 @@ public class StreamModel extends Object{
 
     public void writeString(String string) throws IOException {
         stream.write(string.getBytes(StandardCharsets.UTF_8));
+        counter++;
+    }
+
+    public void writeByteArray(byte[] bytes) throws IOException {
+        stream.write(bytes);
         counter++;
     }
 

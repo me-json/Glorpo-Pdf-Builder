@@ -1,5 +1,7 @@
-package models;
+package models.base;
 
+
+import models.Pdf;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,11 +14,11 @@ import java.util.UUID;
 //It can gather offset by getting size before and after writing an
 //entire indirect object
 @SuppressWarnings("unused")
-public class DictionaryModel extends Object{
+public class DictionaryObject extends Object {
     private final HashMap<String, String> map = new HashMap<>();
     private final UUID Id = UUID.randomUUID();
 
-    public DictionaryModel(PdfModel pdfModel) {
+    public DictionaryObject(Pdf pdfModel) {
         super(pdfModel);
         pdfModel.registerObject(this);
     }

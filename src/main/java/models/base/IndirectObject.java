@@ -1,6 +1,8 @@
-package models;
+package models.base;
 
 
+
+import models.Pdf;
 
 import java.io.IOException;
 
@@ -20,7 +22,7 @@ public abstract class IndirectObject extends Object{
 
 
 
-    public IndirectObject(PdfModel pdfModel) {
+    public IndirectObject(Pdf pdfModel) {
         super(pdfModel);
         this.objectNumber = pdfModel.provideObjectNumber();
         pdfModel.registerObject(this);
@@ -30,8 +32,12 @@ public abstract class IndirectObject extends Object{
 
 
     //Writes entire object, object syntax (5 0 R obj .... endobj)
-    void writeToPdf() throws IOException {}
+    public void writeToPdf() throws IOException {}
 
+
+    public String returnObjectHeader() {
+        return getObjectNumber() + " " + getGenerationNumber() + " obj\n";
+    }
 
     public void calculateSize() {
         size = pdfModel.getCurrentSize() - startingOffset;

@@ -1,5 +1,5 @@
-import models.ContentModel;
-import models.PdfModel;
+import models.ContentIndirectObject;
+import models.Pdf;
 import org.junit.jupiter.api.*;
 
 import java.io.ByteArrayOutputStream;
@@ -10,18 +10,17 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ContentModelTest {
+public class ContentModelTest extends IndirectObjectTest {
 
-    static PdfModel pdfModel;
-    static ContentModel model;
+
+    static ContentIndirectObject model;
     static UUID uuid;
 
-    @BeforeAll
-    static void setup() throws IOException {
-        pdfModel = new PdfModel();
+    @Override
+    void additionalSetup() {
         uuid = UUID.randomUUID();
         try {
-            model = new ContentModel(pdfModel);
+            model = new ContentIndirectObject(pdfModel);
             model.drawImage(uuid, 132, 0, 0, 132, 45, 140);
             model.drawImage(uuid, 132, 0, 0, 132, 45, 140);
             model.writeToPdf();
@@ -49,7 +48,5 @@ public class ContentModelTest {
                 "endobj\n");
     }
 
-    private String baosToString(ByteArrayOutputStream baos) {
-        return baos.toString(StandardCharsets.UTF_8);
-    }
+
 }

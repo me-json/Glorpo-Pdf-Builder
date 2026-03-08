@@ -1,25 +1,29 @@
 package models;
 
+import models.base.DictionaryObject;
+import models.base.IndirectObject;
+import models.base.StreamObject;
+
 import java.io.IOException;
 import java.util.UUID;
 
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ContentModel extends IndirectObject {
+public class ContentIndirectObject extends IndirectObject {
 
 
     //This entire class could be done inside StreamObject class...
     //Maybe it could extend StreamObject
-    private final DictionaryModel dictionary;
-    private final StreamModel stream;
+    private final DictionaryObject dictionary;
+    private final StreamObject stream;
 
 
 
 
-    public ContentModel(PdfModel model) {
+    public ContentIndirectObject(Pdf model) {
         super(model);
-        dictionary = new DictionaryModel(pdfModel);
-        stream = new StreamModel(pdfModel);
+        dictionary = new DictionaryObject(pdfModel);
+        stream = new StreamObject(pdfModel);
     }
 
 
@@ -58,11 +62,11 @@ public class ContentModel extends IndirectObject {
     }
 
 
-    public DictionaryModel getDictionary() {
+    public DictionaryObject getDictionary() {
         return dictionary;
     }
 
-    public StreamModel getStreamModel() {
+    public StreamObject getStreamModel() {
         return stream;
     }
 

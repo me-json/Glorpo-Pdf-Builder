@@ -1,12 +1,14 @@
-package models;
+package models.base;
+
+import models.Pdf;
 
 import java.util.UUID;
 
 public abstract class Object {
-    protected final PdfModel pdfModel;
+    protected final Pdf pdfModel;
     private final UUID id = UUID.randomUUID();
 
-    public Object(PdfModel pdfModel) {
+    public Object(Pdf pdfModel) {
         this.pdfModel = pdfModel;
     }
 
