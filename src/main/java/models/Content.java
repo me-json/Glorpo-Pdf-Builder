@@ -9,7 +9,7 @@ import java.util.UUID;
 
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ContentIndirectObject extends IndirectObject {
+public class Content extends IndirectObject {
 
 
     //This entire class could be done inside StreamObject class...
@@ -20,7 +20,7 @@ public class ContentIndirectObject extends IndirectObject {
 
 
 
-    public ContentIndirectObject(Pdf model) {
+    public Content(Pdf model) {
         super(model);
         dictionary = new DictionaryObject(pdfModel);
         stream = new StreamObject(pdfModel);
@@ -32,7 +32,7 @@ public class ContentIndirectObject extends IndirectObject {
     public void writeToPdf() throws IOException {
         String objectLine = getObjectNumber() + " " + getGenerationNumber() + " obj\n";
         pdfModel.writeString(objectLine);
-        dictionary.writeDictionaryEntry("Length", String.valueOf(stream.getStreamSize()));
+        dictionary.writeDictionaryEntry("/Length", String.valueOf(stream.getStreamSize()));
         pdfModel.writeString(dictionary.returnDictionary());
         pdfModel.writeString("stream\n");
         pdfModel.writeByteArray(stream.getStream());

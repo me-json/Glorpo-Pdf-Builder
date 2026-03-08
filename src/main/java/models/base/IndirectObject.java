@@ -27,6 +27,7 @@ public abstract class IndirectObject extends Object{
         this.objectNumber = pdfModel.provideObjectNumber();
         pdfModel.registerObject(this);
         this.startingOffset = pdfModel.getCurrentSize();
+        markInUse();
     }
 
 
@@ -37,6 +38,10 @@ public abstract class IndirectObject extends Object{
 
     public String returnObjectHeader() {
         return getObjectNumber() + " " + getGenerationNumber() + " obj\n";
+    }
+
+    public String returnObjectReference() {
+        return getObjectNumber() + " " + getGenerationNumber() + " " + (isInUse() ? "R" : "F");
     }
 
     public void calculateSize() {
@@ -75,6 +80,15 @@ public abstract class IndirectObject extends Object{
     public boolean isInUse() {
         return inUse;
     }
+
+    public void markInUse() {
+        inUse = true;
+    }
+
+    public void markNotInUse() {
+        inUse = false;
+    }
+
     public int getGeneration() {
         return generationNumber;
     }

@@ -5,17 +5,17 @@ import models.base.IndirectObject;
 
 import java.io.IOException;
 
-public class PageIndirectObject extends IndirectObject {
+public class Page extends IndirectObject {
 
     private final DictionaryObject dictionary;
 
 
 
-    public PageIndirectObject(Pdf model, PagesIndirectObject pagesModel) {
+    public Page(Pdf model) {
         super(model);
-        pagesModel.registerPage(this);
+        model.getPagesIndirectObject().registerPage(this);
         dictionary = new DictionaryObject(model);
-        dictionary.writeDictionaryEntry("/Type", "/PageIndirectObject");
+        dictionary.writeDictionaryEntry("/Type", "/Page");
     }
 
     public void setMediaBox(int x1, int y1, int x2, int y2) {
@@ -23,7 +23,7 @@ public class PageIndirectObject extends IndirectObject {
         dictionary.writeDictionaryEntry("/MediaBox", value);
     }
     //Here we have a content model that is an indirect object
-    public void writeContents(ContentIndirectObject model) {
+    public void writeContents(Content model) {
         String value = model.getObjectNumber() + " " + model.getGenerationNumber() + " " + (model.isInUse() ? "R" : "F");
         dictionary.writeDictionaryEntry("/Contents", value);
     }

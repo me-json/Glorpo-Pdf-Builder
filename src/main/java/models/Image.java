@@ -8,7 +8,7 @@ import java.io.IOException;
 
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ImageIndirectObject extends IndirectObject {
+public class Image extends IndirectObject {
 
 
     //This entire class could be done inside StreamObject class...
@@ -19,7 +19,7 @@ public class ImageIndirectObject extends IndirectObject {
 
 
 
-    public ImageIndirectObject(Pdf model) {
+    public Image(Pdf model) {
         super(model);
         dictionary = new DictionaryObject(pdfModel);
         stream = new StreamObject(pdfModel);
@@ -55,7 +55,7 @@ public class ImageIndirectObject extends IndirectObject {
 
     public void writeImageAttributes(int width, int height, String colorSpace, int bitsPerComponent) {
         dictionary.writeDictionaryEntry("/Type", "/XObject");
-        dictionary.writeDictionaryEntry("/Subtype", "/ImageIndirectObject");
+        dictionary.writeDictionaryEntry("/Subtype", "/Image");
         dictionary.writeDictionaryEntry("/Width", "/" + String.valueOf(width));
         dictionary.writeDictionaryEntry("/Height", "/" + String.valueOf(height));
         dictionary.writeDictionaryEntry("", "");

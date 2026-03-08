@@ -5,6 +5,7 @@ import models.Pdf;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 //entire indirect object
 @SuppressWarnings("unused")
 public class DictionaryObject extends Object {
-    private final HashMap<String, String> map = new HashMap<>();
+    private final LinkedHashMap<String, String> map = new LinkedHashMap<>();
     private final UUID Id = UUID.randomUUID();
 
     public DictionaryObject(Pdf pdfModel) {
@@ -30,11 +31,11 @@ public class DictionaryObject extends Object {
 
     public String returnDictionary() {
         StringBuilder dictionary = new StringBuilder();
-        dictionary.append("<< ");
+        dictionary.append("<<\n");
         for (Map.Entry<?, ?> entry : map.entrySet()) {
-            dictionary.append("/").append(entry.getKey()).append(" ").append(entry.getValue());
+            dictionary.append(entry.getKey()).append(" ").append(entry.getValue()).append("\n");
         }
-        dictionary.append(" >>\n");
+        dictionary.append(">>\n");
         return dictionary.toString();
     }
 
@@ -46,11 +47,12 @@ public class DictionaryObject extends Object {
     }
 
     public void writeDictionary() throws IOException {
-        pdfModel.writeString("<<");
+        pdfModel.writeString("<<\n");
         for (String key : map.keySet()) {
-            String s = "/" + key + " /" + map.get(key) + "\n";
+            String s = key + " " + map.get(key) + "\n";
             pdfModel.writeString(s);
         }
+        pdfModel.writeString(">>\n");
     }
 
 

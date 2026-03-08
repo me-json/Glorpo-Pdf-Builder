@@ -1,3 +1,5 @@
+package base;
+
 import models.Pdf;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -7,9 +9,9 @@ import java.nio.charset.StandardCharsets;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class IndirectObjectTest {
+public abstract class IndirectObject {
 
-    static Pdf pdfModel;
+    public static Pdf pdfModel;
 
     @BeforeAll
     void setup() throws Exception {
@@ -17,11 +19,11 @@ public abstract class IndirectObjectTest {
         additionalSetup();
     }
 
-    void additionalSetup() {
+    public void additionalSetup() {
         System.out.println("No Additional Setup Implemented");
     }
 
-    String baosToString(ByteArrayOutputStream baos) {
+    public String baosToString(ByteArrayOutputStream baos) {
         return baos.toString(StandardCharsets.UTF_8);
     }
 

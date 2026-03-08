@@ -23,8 +23,8 @@ public class Pdf {
     private int currentGenerationNumber = 0;
     private final LinkedHashMap<UUID, models.base.Object> objects = new LinkedHashMap<>();
     private int xrefOffset;
-    private PagesIndirectObject pagesIndirectObject;
-    private CatalogIndirectObject catalogIndirectObject;
+    private Pages pages;
+    private Catalog catalog;
 
 
     public Pdf() throws IOException {
@@ -55,20 +55,18 @@ public class Pdf {
     }
 
 
-    public void writePagesIndirectObject(PagesIndirectObject pagesIndirectObject) {
-        this.pagesIndirectObject = pagesIndirectObject;
+    public void writePagesIndirectObject(Pages pages) {
+        this.pages = pages;
+    }
+    public Pages getPagesIndirectObject() {
+        return pages;
     }
 
-    public PagesIndirectObject getPagesIndirectObject() {
-        return pagesIndirectObject;
+    public void writeCatalogIndirectObject(Catalog catalog) {
+        this.catalog = catalog;
     }
-
-    public void writeCatalogIndirectObject(CatalogIndirectObject catalogIndirectObject) {
-        this.catalogIndirectObject = catalogIndirectObject;
-    }
-
-    public CatalogIndirectObject getCatalogIndirectObject() {
-        return catalogIndirectObject;
+    public Catalog getCatalogIndirectObject() {
+        return catalog;
     }
 
     //This can be refactored to use writeString method
@@ -77,7 +75,7 @@ public class Pdf {
         outputStream.write("xref\n".getBytes(StandardCharsets.US_ASCII));
         outputStream.write(String.valueOf(currentXrefNumber).getBytes(StandardCharsets.US_ASCII));
         outputStream.write(" ".getBytes(StandardCharsets.US_ASCII));
-        outputStream.write(String.valueOf(objects.size()).getBytes(StandardCharsets.US_ASCII));
+        outputStream.write(String.valueOf(objects.size()-1).getBytes(StandardCharsets.US_ASCII));
         outputStream.write("\n".getBytes(StandardCharsets.US_ASCII));
         outputStream.write("0000000000 65535 f\n".getBytes(StandardCharsets.US_ASCII));
         int i = 0;
@@ -96,15 +94,11 @@ public class Pdf {
         int objectOffset = indirectObject.getStartingOffset();
         String generationNumber = indirectObject.getGenerationNumber();
         boolean inUse = indirectObject.isInUse();
-        return String.format("%010d %05d %s \n", objectOffset, Integer.parseInt(generationNumber), inUse ? "n" : "f");
+        return String.format("%010d %05d %s\n", objectOffset, Integer.parseInt(generationNumber), inUse ? "n" : "f");
     }
 
     public void writeTrailer() throws IOException {
         outputStream.write("trailer\n".getBytes(StandardCharsets.US_ASCII));
-
-
-
-
         outputStream.write("startxref\n".getBytes(StandardCharsets.US_ASCII));
         outputStream.write((String.valueOf(xrefOffset) + "\n").getBytes(StandardCharsets.US_ASCII));
         outputStream.write("%%EOF".getBytes(StandardCharsets.US_ASCII));

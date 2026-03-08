@@ -5,12 +5,12 @@ import models.base.IndirectObject;
 
 import java.io.IOException;
 
-public class CatalogIndirectObject extends IndirectObject {
+public class Catalog extends IndirectObject {
 
 
     private final DictionaryObject dictionary;
 
-    public CatalogIndirectObject(Pdf pdfModel) {
+    public Catalog(Pdf pdfModel) {
         super(pdfModel);
         pdfModel.writeCatalogIndirectObject(this);
         dictionary = new DictionaryObject(pdfModel);
@@ -25,7 +25,7 @@ public class CatalogIndirectObject extends IndirectObject {
 
     public void writeCatalogAttributes() {
         dictionary.writeDictionaryEntry("/Type", "/Catalog");
-        dictionary.writeDictionaryEntry("/Pages", pdfModel.getPagesIndirectObject().returnObjectHeader());
+        dictionary.writeDictionaryEntry("/Pages", pdfModel.getPagesIndirectObject().returnObjectReference());
     }
 
 }
