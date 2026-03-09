@@ -15,7 +15,7 @@ public abstract class IndirectObject extends Object{
 
 
     private final int objectNumber;
-    private final int startingOffset;
+    private int startingOffset;
     private int size;
     private int generationNumber = 0;
     private boolean inUse = false;
@@ -44,6 +44,9 @@ public abstract class IndirectObject extends Object{
         return getObjectNumber() + " " + getGenerationNumber() + " " + (isInUse() ? "R" : "F");
     }
 
+    public void updateStartingOffset(int startingOffset) {
+        this.startingOffset = startingOffset;
+    }
     public void calculateSize() {
         size = pdfModel.getCurrentSize() - startingOffset;
     }

@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class IndirectObject {
+public abstract class IndirectObjectTest {
 
     public static Pdf pdfModel;
 

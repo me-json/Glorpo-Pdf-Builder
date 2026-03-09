@@ -1,4 +1,4 @@
-import base.IndirectObject;
+import base.IndirectObjectTest;
 import models.Content;
 import org.junit.jupiter.api.*;
 
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class XrefTable extends IndirectObject {
+public class XrefTableTest extends IndirectObjectTest {
 
     static Content model;
     static Content model2;

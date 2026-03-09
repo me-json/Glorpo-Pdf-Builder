@@ -1,4 +1,5 @@
-import base.IndirectObject;
+import base.IndirectObjectTest;
+import models.Catalog;
 import models.Pages;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.*;
@@ -9,15 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class Catalog extends IndirectObject {
+public class CatalogTest extends IndirectObjectTest {
 
-    static models.Catalog model;
+    static Catalog model;
     static Pages model2;
 
     @Override
     public void additionalSetup() {
         try {
-            model = new models.Catalog(pdfModel);
+            model = new Catalog(pdfModel);
             model2 = new Pages(pdfModel);
             model.writeCatalogAttributes();
             model.writeToPdf();

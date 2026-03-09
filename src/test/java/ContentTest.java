@@ -1,4 +1,5 @@
-import base.IndirectObject;
+import base.IndirectObjectTest;
+import models.Content;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -7,17 +8,17 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class Content extends IndirectObject {
+public class ContentTest extends IndirectObjectTest {
 
 
-    static models.Content model;
+    static Content model;
     static UUID uuid;
 
     @Override
     public void additionalSetup() {
         uuid = UUID.randomUUID();
         try {
-            model = new models.Content(pdfModel);
+            model = new Content(pdfModel);
             model.drawImage(uuid, 132, 0, 0, 132, 45, 140);
             model.drawImage(uuid, 132, 0, 0, 132, 45, 140);
             model.writeToPdf();

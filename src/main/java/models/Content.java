@@ -32,7 +32,7 @@ public class Content extends IndirectObject {
     public void writeToPdf() throws IOException {
         String objectLine = getObjectNumber() + " " + getGenerationNumber() + " obj\n";
         pdfModel.writeString(objectLine);
-        dictionary.writeDictionaryEntry("/Length", String.valueOf(stream.getStreamSize()));
+        dictionary.writeDictionaryEntry("/Length", String.valueOf(stream.getStreamSize()-1));
         pdfModel.writeString(dictionary.returnDictionary());
         pdfModel.writeString("stream\n");
         pdfModel.writeByteArray(stream.getStream());

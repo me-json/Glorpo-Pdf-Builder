@@ -21,7 +21,7 @@ public class DictionaryObject extends Object {
 
     public DictionaryObject(Pdf pdfModel) {
         super(pdfModel);
-        pdfModel.registerObject(this);
+        //pdfModel.registerObject(this);
     }
 
 

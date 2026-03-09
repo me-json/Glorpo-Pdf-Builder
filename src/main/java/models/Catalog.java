@@ -18,6 +18,7 @@ public class Catalog extends IndirectObject {
 
     public void writeToPdf() throws IOException {
         pdfModel.writeString(this.returnObjectHeader());
+        writeCatalogAttributes();
         pdfModel.writeString(dictionary.returnDictionary());
         pdfModel.writeString("endobj\n");
         calculateSize();

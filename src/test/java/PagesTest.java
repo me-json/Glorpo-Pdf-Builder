@@ -1,5 +1,6 @@
-import base.IndirectObject;
+import base.IndirectObjectTest;
 import models.Page;
+import models.Pages;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -8,15 +9,15 @@ import org.junit.jupiter.api.TestMethodOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class Pages extends IndirectObject {
+public class PagesTest extends IndirectObjectTest {
 
-    static models.Pages model;
+    static Pages model;
     static Page model2;
 
     @Override
     public void additionalSetup() {
         try {
-            model = new models.Pages(pdfModel);
+            model = new Pages(pdfModel);
             model2 = new Page(pdfModel);
             model.writeToPdf();
         } catch (Exception e) {

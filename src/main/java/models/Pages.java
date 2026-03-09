@@ -23,11 +23,13 @@ public class Pages extends IndirectObject {
     }
 
     public void writeToPdf() throws IOException {
+        updateStartingOffset(pdfModel.getCurrentSize());
         String objectLine = getObjectNumber() + " " + getGenerationNumber() + " obj\n";
         pdfModel.writeString(objectLine);
         writeKids();
         dictionary.writeDictionary();
         pdfModel.writeString("endobj\n");
+        calculateSize();
     }
 
     public void writeKids() {
@@ -39,7 +41,7 @@ public class Pages extends IndirectObject {
             something.append(page.returnObjectReference());
         }
         String result = something.toString();
-        dictionary.writeDictionaryEntry("/Kids", result);
+        dictionary.writeDictionaryEntry("/Kids", "[" + result + "]");
     }
 
 }
