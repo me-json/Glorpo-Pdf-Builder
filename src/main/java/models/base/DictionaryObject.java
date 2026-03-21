@@ -29,6 +29,11 @@ public class DictionaryObject extends Object {
         map.put(key, value);
     }
 
+    public void writeDictionaryEntry(String key, DictionaryObject value) {
+        map.put(key, value.returnDictionary());
+    }
+
+    //to could be just toString()
     public String returnDictionary() {
         StringBuilder dictionary = new StringBuilder();
         dictionary.append("<<\n");
@@ -41,10 +46,6 @@ public class DictionaryObject extends Object {
 
 
 
-
-    public void writePair(String key, String value) {
-        map.put(key, value);
-    }
 
     public void writeDictionary() throws IOException {
         pdfModel.writeString("<<\n");

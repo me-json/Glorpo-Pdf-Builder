@@ -39,6 +39,7 @@ public class Pages extends IndirectObject {
         StringBuilder something = new StringBuilder();
         for (Page page : pages) {
             something.append(page.returnObjectReference());
+            something.append(" ");
         }
         String result = something.toString();
         dictionary.writeDictionaryEntry("/Kids", "[" + result + "]");
