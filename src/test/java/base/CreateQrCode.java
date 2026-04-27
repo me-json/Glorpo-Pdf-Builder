@@ -9,12 +9,12 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.zip.Deflater;
 
-public class CreateBarcode {
+public class CreateQrCode {
 
     public static byte[] getCompressedBarcode(String data) {
         try {
             BitMatrix m = new MultiFormatWriter()
-                    .encode(data, BarcodeFormat.CODE_128, 650, 300);
+                    .encode(data, BarcodeFormat.QR_CODE, 300, 300);
 
             int w = m.getWidth(), h = m.getHeight(), row = (w + 7) / 8;
             byte[] out = new byte[row * h];
@@ -23,21 +23,6 @@ public class CreateBarcode {
                 for (int x = 0; x < w; x++)
                     if (m.get(x, y))
                         out[y * row + x / 8] |= (1 << (7 - (x % 8)));
-
-
-//       Adding decode params to pdf negates need to flip bits...
-//            <<
-//              /Type /XObject
-//                /Subtype /Image
-//                /Width 650
-//                /Height 300
-//                /ColorSpace /DeviceGray
-//                /BitsPerComponent 1
-//                /Filter /FlateDecode
-//                /Decode [1 0]   % 👈 THIS is the important line
-//                /Length ...
-//            >>
-
 
             for (int i = 0; i < out.length; i++) {
                 out[i] = (byte) ~out[i];

@@ -76,11 +76,11 @@ public class Content extends IndirectObject {
 
     public void writeText(String text, String name, int x, int y, String fontId, int fontSize) throws IOException {
         StringBuilder builder = new StringBuilder();
-        builder.append("Bt");
-        builder.append(fontId + " " + String.valueOf(fontSize) + " " + "Tf"); //Font & size
-        builder.append(String.valueOf(x) + " " + String.valueOf(y) + " " + "Td");
-        builder.append("(" + text + ") "Tj");
-        builder.append(Et");
+        builder.append("BT\n");
+        builder.append(fontId + " " + String.valueOf(fontSize) + " " + "Tf\n"); //Font & size
+        builder.append(String.valueOf(x) + " " + String.valueOf(y) + " " + "Td\n");
+        builder.append("(" + text + ") Tj\n");
+        builder.append("ET\n");
         String drawingInstructions = builder.toString();
         stream.writeString(drawingInstructions);
     }
