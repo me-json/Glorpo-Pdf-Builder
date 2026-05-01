@@ -37,27 +37,39 @@ public class Page extends IndirectObject {
     //But here we have an XObject that is a direct object, it can be direct or indirect
     ///XObject << /Im0 22 0 R >> or /XObject 15 0 R
     public void writeImage(Image image, String reference) {
-
-        DictionaryObject dictionary = new DictionaryObject(pdfModel);
-        dictionary.writeDictionaryEntry("/" + reference, image.returnObjectReference());
-        writeResource("XObject", dictionary);
+        StringBuilder builder = new StringBuilder();
+        builder.append("/");
+        builder.append(reference);
+        builder.append(" ");
+        builder.append(image.returnObjectReference());
+        builder.append("\n");
+        System.out.println(builder.toString());
+        writeResource("XObject\n<<\n", builder.toString());
     }
 
     public void writeResource(String key, String value) {
-        resources.writeDictionaryEntry(key, value);
+        if(resources.containsKey("/" + key)) {
+            resources.appendValue("/" + key, value);
+            System.out.println("entry1");
+        } else {
+            resources.writeDictionaryEntry("/" + key, value);
+        }
     }
 
     public void writeResource(String key, DictionaryObject resource) {
-        resources.writeDictionaryEntry("/" + key , resource.returnDictionary());
+        if(resources.containsKey("/" + key)) {
+            resources.appendValue("/" + key, resource.returnDictionary());
+        } else {
+            resources.writeDictionaryEntry("/" + key, resource.returnDictionary());
+        }
     }
 
     public void writeToPdf() throws IOException {
         pdfModel.writeString(this.returnObjectHeader());
         dictionary.writeDictionaryEntry("/Resources", resources);
-        System.out.println(resources.returnDictionary());
         //dictionary.writeDictionaryEntry("/Contents", contents);
         pdfModel.writeString(dictionary.returnDictionary());
-        pdfModel.writeString("endobj\n");
+        pdfModel.writeString(">>endobj\n");
         calculateSize();
     }
 

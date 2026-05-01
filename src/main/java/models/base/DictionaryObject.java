@@ -33,6 +33,20 @@ public class DictionaryObject extends Object {
         map.put(key, value.returnDictionary());
     }
 
+
+    public boolean containsKey(String key) {
+        return map.containsKey(key);
+    }
+
+    public void appendValue(String key, String value) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(map.get(key));
+        builder.append("\n");
+        builder.append(value);
+        map.put(key, builder.toString());
+    }
+    public void appendValue(String key, DictionaryObject value) {}
+
     //to could be just toString()
     public String returnDictionary() {
         StringBuilder dictionary = new StringBuilder();
